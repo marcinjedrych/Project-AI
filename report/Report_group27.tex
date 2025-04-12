@@ -1,0 +1,106 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Project: COVID-19 Assisted Diagnosis\\
+
+
+\author{\IEEEauthorblockN{Given Name Surname\textsuperscript{1}}
+\and
+\IEEEauthorblockN{Given Name Surname\textsuperscript{1}}
+\and
+\IEEEauthorblockN{Given Name Surname\textsuperscript{2}}
+\and
+\IEEEauthorblockN{Given Name Surname\textsuperscript{3}}
+\and
+
+\textsuperscript{1} Bachelor of Science in de ingenieurswetenschappen - werktuigkunde-elektrotechniek \hfill\\
+\textsuperscript{2} Bachelor of Science in de ingenieurswetenschappen - biomedische ingenieurstechnieken\hfill\\
+\textsuperscript{3}  Bachelor of Science in de ingenieurswetenschappen - elektrotechniek\hfill}
+}
+\maketitle
+
+
+
+\section{Introduction}
+Adds context to your project (referencing the material in your bibliography is important~\cite{b1, b2}) and presents the content of the following sections (starting with Section~\ref{sec:task_1}).
+
+
+\section{Task 1: Data Exploration, Pre-Processing and Augmentation}\label{sec:task_1}
+Question 1
+-	COVID and normal chest X-rays can have subtle visual differences, making it hard for a model to learn the differences between classes.
+-	The dataset size is relatively small (only 1600 training images), which increases the risk of overfitting.
+-	X-ray images often have variability in terms of brightness, contrast, and anatomical differences between individuals, which introduce noise
+-	If the dataset is not perfectly balanced the model might become biased toward the majority class but fortunately, the plot shows that this is not the case here.
+Question 2
+Based on the pixel statistics and label distribution, the datasets appear to be fairly uniformly divided, though not perfectly. The average pixel values and standard deviations are similar across sets — training (mean ≈ 0.53, std ≈ 0.25), validation (mean ≈ 0.55, std ≈ 0.26), and test (mean ≈ 0.55, std ≈ 0.26) — indicating consistent image intensity. The class distribution also looks well balanced overall. The training set is evenly split, while the validation set shows a slight tilt toward NORMAL, and the test set has a few more COVID samples. These minor differences are not concerning. Overall, the datasets are reasonably well-balanced in terms of both pixel characteristics and label distribution.
+Question 3
+COVID-19 lesions often appear as ground-glass opacities or consolidation patches, which have different intensity distributions compared to normal lungs.
+If these variations between the COVID-positive and normal X-rays are not addressed properly (e.g., by normalization or augmentation), the model could fail to learn the correct patterns, reducing its accuracy. This issue might cause the model to misinterpret lesions as part of normal anatomy or vice versa.Unaccounted-for artifacts can mislead the model by focusing on irrelevant patterns. It’s crucial to ensure that image pre-processing (such as normalization and augmentation) reduces the impact of these artifacts. This would help the model focus on medically relevant features rather than on noise or imaging imperfections.
+
+Question 4
+We downsample to from 299x299 to 128x128, this forms a good compromise between not downscalig too much and having doable runtimes of the algorithms.
+Downsampling does not only mean you lose some information, it also makes the picture more general, and cause less overfitting of your model.
+
+\subsection{Subsection 1 (e.g. Methods)}
+ Details the strategies you have employed, including those that did not work.
+
+\subsection{Subsection 2 (e.g. Results)}
+Includes tables with quantitative results (Table~\ref{table:example}) and images (Fig.~\ref{fig:example}) from your project while carefully explaining their meaning and how you produced them.
+\begin{table}[htbp]
+\caption{Table Type Styles}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
+\cline{2-4} 
+\textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
+\hline
+copy& More table copy$^{\mathrm{a}}$& &  \\
+\hline
+\multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
+\end{tabular}
+\label{table:example}
+\end{center}
+\end{table}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics{fig1.png}}
+\caption{Example of a figure caption.}
+\label{fig:example}
+\end{figure}
+\subsection{Subsection 3 (e.g. Discussion)}
+Discusses the results and your general experience with the project, as well as provide answers to the questions about the task.
+\section{Task 2: Building the baseline model}
+\section{Task 3: Transfer Learning}
+\section{Task 4: Explainability through Grad-CAM}
+\section{Conclusions}
+\section{Author contributions and collaboration}
+\section{Use of Generative AI}
+
+
+\subsection{Figures and Tables}
+\paragraph{Positioning Figures and Tables}
+
+
+
+
+\section*{References}
+Example References:
+\begin{thebibliography}{00}
+\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
+\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
+\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
+\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
+\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
+\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
+\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
+\end{thebibliography}
+\end{document}
