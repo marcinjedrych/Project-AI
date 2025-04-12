@@ -49,6 +49,13 @@ Question 4
 We downsample to from 299x299 to 128x128, this forms a good compromise between not downscalig too much and having doable runtimes of the algorithms.
 Downsampling does not only mean you lose some information, it also makes the picture more general, and cause less overfitting of your model.
 
+Question 5
+In order to a general method, the images were normalized using dataset statistics. The mean and standarddeviation of all pixels in the training ?XX and validation?? dataset were used as normalization statistics. 
+The same statistics could be used over all three channels as all these channels have the same values since the pictures are black and white. It is however not possible to use a loaded image with just one channel in the resnet50v2 model. Hence, the images are loaded as if they have 3 channels.
+
+Question 6
+Excessive transformations could indeed introduce unrealistic patterns. It is for example very unlikely that the images would be vertically flipped, as lungs are not symmetrical: for the vast majority of people, the heart is on the left side of the body causing a smaller lung on that side. 
+We also assumed that the pictures were never horizontally flipped, as out of all samples we looked at, there was not one that was flipped there. However, slight rotations, zooms and translations are very relevant as it is likely those occur in the dataset, using these transformations thus generalizes the training data set in a relevant way, which can avoid overfitting of the model in a later stage.
 \subsection{Subsection 1 (e.g. Methods)}
  Details the strategies you have employed, including those that did not work.
 
