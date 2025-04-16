@@ -110,3 +110,19 @@ def test_validation_data_Pipeline(batch_size, img_size, train_dir, test_dir):
     )
 
     return(test_data_gen)
+
+def test_data_Pipeline_non_normalized(batch_size, img_size, test_dir):
+    #set up training data generator, with data augmentation and normalization
+    test_image_generator = ImageDataGenerator(
+        rescale=1./255, 
+    )
+    
+    test_data_gen = test_image_generator.flow_from_directory(
+        batch_size=batch_size,
+        directory=test_dir,
+        shuffle=True,
+        target_size=img_size,
+        class_mode = "binary"
+    )
+
+    return(test_data_gen)
