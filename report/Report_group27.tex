@@ -56,6 +56,26 @@ The same statistics could be used over all three channels as all these channels 
 Question 6
 Excessive transformations could indeed introduce unrealistic patterns. It is for example very unlikely that the images would be vertically flipped, as lungs are not symmetrical: for the vast majority of people, the heart is on the left side of the body causing a smaller lung on that side. 
 We also assumed that the pictures were never horizontally flipped, as out of all samples we looked at, there was not one that was flipped there. However, slight rotations, zooms and translations are very relevant as it is likely those occur in the dataset, using these transformations thus generalizes the training data set in a relevant way, which can avoid overfitting of the model in a later stage.
+
+\section{Task 3}
+Question 13
+The dataset was limited so the architecture was chosen so that overfitting will be limited. We chose a GlobalAveragePooling2D layer to reduce spatial dimensions.
+To prevent overfitting, a dense layer and dropout layer was added. Finally, a single-node dense layer with sigmoid activation was used to get the binary output.
+
+Question 14
+
+Question 15
+
+Question 16
+
+Question 17
+Transfer learning requires less training data and converges faster. 
+The pretrained model is not trained specifically on X-ray data.
+
+Question 18
+We could use a model that was specifically trained on medical images such as CheXNet.
+We could combine this approach with semi-supervised learning with unlabeld X-rays.
+
 \subsection{Subsection 1 (e.g. Methods)}
  Details the strategies you have employed, including those that did not work.
 
