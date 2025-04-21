@@ -87,7 +87,7 @@ def training_data_Pipeline(batch_size, img_size, train_dir):
     return(train_data_gen)
 
 
-def test_validation_data_Pipeline(batch_size, img_size, train_dir, test_dir):
+def test_validation_data_Pipeline(batch_size, img_size, train_dir, test_dir, shuffle = True):
     # get parameters for normalization
     global_mean, global_std = get_normalization_numbers(img_size, train_dir)
 
@@ -104,7 +104,8 @@ def test_validation_data_Pipeline(batch_size, img_size, train_dir, test_dir):
     test_data_gen = test_image_generator.flow_from_directory(
         batch_size=batch_size,
         directory=test_dir,
-        shuffle=True,
+        shuffle=shuffle,
+        seed = 123,
         target_size=img_size,
         class_mode = "binary"
     )
@@ -120,7 +121,8 @@ def test_data_Pipeline_non_normalized(batch_size, img_size, test_dir):
     test_data_gen = test_image_generator.flow_from_directory(
         batch_size=batch_size,
         directory=test_dir,
-        shuffle=True,
+        shuffle=False,
+        seed = 123,
         target_size=img_size,
         class_mode = "binary"
     )
