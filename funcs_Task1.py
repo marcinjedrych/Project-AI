@@ -70,7 +70,7 @@ def training_data_Pipeline(batch_size, img_size, train_dir):
         featurewise_std_normalization=True,
         rotation_range = 15,
         zoom_range = 0.2,
-        vertical_flip = True
+        width_shift_range=0.2
     )
     
     train_image_generator.mean = global_mean
@@ -95,7 +95,7 @@ def test_validation_data_Pipeline(batch_size, img_size, train_dir, test_dir, shu
     test_image_generator = ImageDataGenerator(
         rescale=1./255, 
         featurewise_center=True, 
-        featurewise_std_normalization=True,
+        featurewise_std_normalization=True
     )
     
     test_image_generator.mean = global_mean
