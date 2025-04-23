@@ -8,10 +8,11 @@ import seaborn as sns
 ## function plotting accuracy and loss of training vs validation dataset
 def plot_accuracy_loss(history, epochs, validation = True):
     acc = history.history['accuracy']
-    val_acc = history.history['val_accuracy']
-
     loss=history.history['loss']
-    val_loss=history.history['val_loss']
+    
+    if validation:
+        val_acc = history.history['val_accuracy']
+        val_loss=history.history['val_loss']
 
     epochs_range = range(epochs)
 
