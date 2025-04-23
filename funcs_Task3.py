@@ -21,6 +21,8 @@ def plot_accuracy_loss(history, epochs, validation = True):
     if validation:
         plt.plot(epochs_range, val_acc, label='Validation Accuracy')
     plt.legend(loc='lower right')
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
     if validation:
         plt.title('Training and Validation Accuracy')
     else:
@@ -31,6 +33,8 @@ def plot_accuracy_loss(history, epochs, validation = True):
     if validation:
         plt.plot(epochs_range, val_loss, label='Validation Loss')
     plt.legend(loc='upper right')
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
     if validation:
         plt.title('Training and Validation Loss')
     else:
