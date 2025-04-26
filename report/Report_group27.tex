@@ -91,36 +91,36 @@ Question 19
 
 Did you have to modify the algorithm to account for a scalar output? If so, how did you modify it?
 
-Yes we modified it to a dense layer with two outputs, a score for each class (covid and normal).
-to align with Grad-CAM’s requirement .
+Yes, we modified the model to use a dense layer with two outputs, providing a score for each class (COVID and normal), to align with Grad-CAM’s requirement for class-specific outputs.
 
 Question 20
 
 Do you think that having only two class labels affects the explanation? If you do, how so?
 
-Before the scalar told us which decision was made which is binary (covid or not). But now the interpretation change a bit, we now have a logit or porbability score for both the classes. 
-You could say that the highest probability score is the class that is chosen, which will be equivalent to the binary classification in a way.
+Initially, the model produced a single scalar output indicating whether the image was classified as COVID or not.
+After the modification, the model outputs logits (or probability scores) for both classes separately. The class with the highest score is chosen, which is still equivalent to binary classification, but the explanation now considers both classes individually.
 
 Question 21
 
 Do the Grad-CAM visualizations highlight medically relevant areas in the X-ray, such as lung opacities or other features indicative of COVID-19?
 
-Yes, if we set pred_index to zero (covid class relevant) you can see that the model is focusing on the lung areas, which is medically relevant probably.
-
+Yes, when setting pred\_index to zero (corresponding to the COVID class), the Grad-CAM visualizations show that the model focuses on lung areas, which are medically relevant and consistent with clinical expectations.
 Question 22
 
-Did Grad-CAM visualizations help you identify potential biases in the model?
-
-We can observe activation sometimes to a square area in the image, which is not relevant to the classification? 
+The Grad-CAM visualizations revealed some activation outside the lungs, sometimes focusing on a square region unrelated to the disease. This suggests that the model may have learned to rely on spurious features, indicating potential biases.
+We can observe activation sometimes to a square area in the image, which is not relevant for the classification.
 
 Question 23
 
 Was Grad-CAM useful for understanding the model’s misclassifications?
 
+no answer yet
+
 Question 24
 
 Consider a scenario in which you can collect additional data and retrain the model. Would you change anything based on the Grad-CAM explanations?
 
+no answer yet
 
 \subsection{Subsection 1 (e.g. Methods)}
  Details the strategies you have employed, including those that did not work.
@@ -154,6 +154,15 @@ Discusses the results and your general experience with the project, as well as p
 \section{Task 2: Building the baseline model}
 \section{Task 3: Transfer Learning}
 \section{Task 4: Explainability through Grad-CAM}
+
+To better understand the decisions made by our COVID-19 classifier, we did a Gradient-weighted Class Activation Mapping (Grad-CAM). Grad-CAM is a technique that highlights the regions of an input image that contribute most strongly to a model’s decision. It works by computing the gradient of a target class score with respect to the activations of the final convolutional layer. These gradients are averaged spatially to obtain importance weights, which are then combined with the activation maps to generate a heatmap that can be overlaid on the original image.
+Initially, the model's scalar output directly indicated a binary decision. However, Grad-CAM requires class-specific outputs. Therefore, we replaced the final layer with a dense layer producing two logits—one for each class (COVID and normal). After this adjustment, the model generated separate scores for both classes, with the predicted class corresponding to the higher score. As a result, the fundamental decision-making process of the model remained unchanged.
+Applying Grad-CAM to test samples showed that, when focusing on the COVID-19 class, the visualizations predominantly highlighted the lung regions—consistent with clinical expectations, given that lung opacities are a key indicator of COVID-19 on chest X-rays. However, Grad-CAM also revealed potential model biases: in some cases, activations appeared outside the lungs, often around rectangular artifacts. These findings highlight that the model may have learned spurious, non-disease-related features, which underlines the purpose of Grad-CAM in explaining and evaluating the model's behavior.
+Our Grad-CAM implementation follows the Keras official tutorial \cite{keras_gradcam}, adapting it to our model. Using TensorFlow’s \texttt{GradientTape}, we computed the gradient of the selected class score with respect to the convolutional feature maps. The gradients were averaged over the spatial dimensions to weigh the importance of each feature channel, and the resulting weighted activation maps were aggregated to form the Grad-CAM heatmap. Finally, the heatmap was normalized between 0 and 1 for visualization.
+\begin{figure}[h] \centering \includegraphics[width=0.8\columnwidth]{gradcam_example.png} \caption{Example Grad-CAM heatmap highlighting lung regions associated with a COVID-positive classification.} \label{fig:gradcam_example} \end{figure}
+
+\+Question 23 \& 24
+
 \section{Conclusions}
 \section{Author contributions and collaboration}
 \section{Use of Generative AI}
