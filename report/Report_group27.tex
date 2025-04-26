@@ -85,6 +85,43 @@ Question 18
 We could use a model that was specifically trained on medical images such as CheXNet.
 We could combine this approach with semi-supervised learning with unlabeld X-rays.
 
+\section{Task 4}
+
+Question 19
+
+Did you have to modify the algorithm to account for a scalar output? If so, how did you modify it?
+
+Yes we modified it to a dense layer with two outputs, a score for each class (covid and normal).
+to align with Grad-CAM’s requirement .
+
+Question 20
+
+Do you think that having only two class labels affects the explanation? If you do, how so?
+
+Before the scalar told us which decision was made which is binary (covid or not). But now the interpretation change a bit, we now have a logit or porbability score for both the classes. 
+You could say that the highest probability score is the class that is chosen, which will be equivalent to the binary classification in a way.
+
+Question 21
+
+Do the Grad-CAM visualizations highlight medically relevant areas in the X-ray, such as lung opacities or other features indicative of COVID-19?
+
+Yes, if we set pred_index to zero (covid class relevant) you can see that the model is focusing on the lung areas, which is medically relevant probably.
+
+Question 22
+
+Did Grad-CAM visualizations help you identify potential biases in the model?
+
+We can observe activation sometimes to a square area in the image, which is not relevant to the classification? 
+
+Question 23
+
+Was Grad-CAM useful for understanding the model’s misclassifications?
+
+Question 24
+
+Consider a scenario in which you can collect additional data and retrain the model. Would you change anything based on the Grad-CAM explanations?
+
+
 \subsection{Subsection 1 (e.g. Methods)}
  Details the strategies you have employed, including those that did not work.
 
