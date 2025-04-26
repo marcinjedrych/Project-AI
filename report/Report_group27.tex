@@ -33,8 +33,8 @@
 
 
 \section{Introduction}
-Within this project on medical image classification, two deep learning models are trained to classify X-ray images of lungs as COVID-positive or COVID-negative images. Further, the Grad-CAM visualization technique is used to be able to show on which areas of an X-ray image are mainly used by the algorithm to decide whether an image shows a person affected with COVID or a person not affected with COVID. This report describes first how the data are explored, preprocessed and augmented (\ref{sec:task_1}). It then explains how a baseline model, using a convolutional network, was fitted (\ref{sec:task_1}) and how transfer learning was used to
-Adds context to your project (referencing the material in your bibliography is important~\cite{b1, b2}) and presents the content of the following sections (starting with Section~\ref{sec:task_1}).
+Within this project on medical image classification, two deep learning models are trained to classify X-ray images of lungs as COVID-positive or COVID-negative images. Further, the Grad-CAM visualization technique is used to be able to show on which areas of an X-ray image are mainly used by the algorithm to decide whether an image shows a person affected with COVID or a person not affected with COVID. This report describes first how the data are explored, preprocessed and augmented (\ref{sec:task_1}). It then explains how a baseline model, using a convolutional network, was fitted (\ref{sec:task_2}) and how transfer learning was used to make use of the pretrained ResNetV2 model (\ref{sec:task_3}). \ref{sec:task_4} describes in which the Grad-CAM visualisation is used to understand why missclassifications happen in the best performing model trained in the previous tasks.
+After the \ref{sec:conclusion}, the report describes how this project was divided between all group members (\ref{sec:author_contributions}. The final section entails our use of generative AI during the project (\ref{sec:generative_AI}).
 
 
 \section{Task 1: Data Exploration, Pre-Processing and Augmentation}\label{sec:task_1}
@@ -70,6 +70,21 @@ Question 9
 
 
 \section{Task 3}
+
+Within task 3, a neural network is built using the transfer learning approach. In other words, a pretrained model is used as a basis to built a model, hereby making it possible to use a network with many layers even though a limited set of training data is available. 
+In this case, the ResNet50V2, a model consisting of 50 layers, is used as the pretrained model. After the ResNet50V2 model, four extra layers are added. First, a GlobalAveragePooling2D layer is added to reduce the spatial dimensions. Then, a 128-node dense layer with relu-activation is added in combination with a dropout layer to reduce risk of overfitting. A final single-node dense layer with sigmoid activation was used to get the binary output.
+
+After setting the model architecture, the hyperparameters of the added layers are tuned. The batch size, learning, and dropout rates are tuned. Table XXXXX shows the XXranges/combinations that are used during the hypertuning process and indicated the optimal outcomes for each hyperparameter. 
+While tuning the hyperparameters, the pretrained parameters in the ResNet50V2-layers remain unchanged. Early stopping based on the validation loss is used with a patience of five steps. After this tuning step, a model is trained during 16 epochs based on the training and validation data. Another, final, model is trained in which the ResNet50V2-layers are unfrozen, hence fine-tuning the weights in these layers is possible. The training curves of the model before unfreezing the ResNet50V2-layers is visualized in figureXXX, the training curves of the model after unfreezing is visualized in figureXXX
+
+
+-comparison training curve between 3 models
+
+- results on the test set (confusion matrix)
+- discuss why probably better than baseline model (advantages)
+-but xxx (disadvantages)
+- possibilities to improve plan of attack
+
 Question 13
 The dataset was limited so the architecture was chosen so that overfitting will be limited. We chose a GlobalAveragePooling2D layer to reduce spatial dimensions.
 To prevent overfitting, a dense layer and dropout layer was added. Finally, a single-node dense layer with sigmoid activation was used to get the binary output.
