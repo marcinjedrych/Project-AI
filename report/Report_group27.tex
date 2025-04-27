@@ -74,16 +74,22 @@ Question 9
 Within task 3, a neural network is built using the transfer learning approach. In other words, a pretrained model is used as a basis to built a model, hereby making it possible to use a network with many layers even though a limited set of training data is available. 
 In this case, the ResNet50V2, a model consisting of 50 layers, is used as the pretrained model. After the ResNet50V2 model, four extra layers are added. First, a GlobalAveragePooling2D layer is added to reduce the spatial dimensions. Then, a 128-node dense layer with relu-activation is added in combination with a dropout layer to reduce risk of overfitting. A final single-node dense layer with sigmoid activation was used to get the binary output.
 
-After setting the model architecture, the hyperparameters of the added layers are tuned. The batch size, learning, and dropout rates are tuned. Table XXXXX shows the XXranges/combinations that are used during the hypertuning process and indicated the optimal outcomes for each hyperparameter. 
-While tuning the hyperparameters, the pretrained parameters in the ResNet50V2-layers remain unchanged. Early stopping based on the validation loss is used with a patience of five steps. After this tuning step, a model is trained during 16 epochs based on the training and validation data. Another, final, model is trained in which the ResNet50V2-layers are unfrozen, hence fine-tuning the weights in these layers is possible. The training curves of the model before unfreezing the ResNet50V2-layers is visualized in figureXXX, the training curves of the model after unfreezing is visualized in figureXXX
+After setting the model architecture, the hyperparameters of the added layers are tuned using a general grid search. The tuned parameters consist of the  batch size, learning, and dropout rates. Table XXXXX shows the XXranges/combinations that are used during the hypertuning process and indicated the optimal outcomes for each hyperparameter. 
+While tuning the hyperparameters, the pretrained parameters in the ResNet50V2-layers remain unchanged. Early stopping based on the validation loss is used with a patience of five steps. After this tuning step, a model is trained during 16 epochs based on the training and validation data. 
+Another, final, model is trained in which the ResNet50V2-layers are unfrozen, hence fine-tuning the weights in these layers is possible. The training curves of the model before unfreezing the ResNet50V2-layers is visualized in figureXXX, the training curves of the model after unfreezing is visualized in figureXXX
 
+The training curves of both trained models within this task look smooth and have shape coming close to the ideal training curve. 
+The model where the ResNet50V2 model parameters are finetuned shows a higher accuracy and lower loss (respectively X and X in the fully trained model) than the model without the extra finetuning (respectively X and X in the fully trained version).
+This hints towards better performance of the finetuned model, but might also indicate a bigger chance of overfitting on the training dataset (consisting of the provided training and validation set). As requested in the task, no training of this model was done using the validation set as holdout-samples, hence this is hard to judge.
+Comparing these curves to the training curve in task 2, XXXX
 
--comparison training curve between 3 models
+As a final step in this task, the finetuned model is evaluated using the test set. Both the confusion matrix (refXX) and the calculated accuracy of XX shows a major improvement compared to the baseline model. 
+This increase in performance is probably due to the transfer learning approach which caused a smoother learning curve that converged faster to decent results with only a limited increase in learning time, even with limited training data. 
+However, still XX out of XX samples are misclassified as COVID and XX samples are misclassified as normal.
+This indicates a big difference in performance compared to the training data, which implies overfitting. Even though the added layers on top of the pretrained ResNet50V2 are meant to restrict this problem. 
+One way to alleviate this overfitting is to introduce bigger transformations in the training set, or add more training data if possible. Alternatively, starting with a lower resolution can also help.
+Another way to improve the results is using a pretrained model specifically trained on medical images such as CheXNet instead of ResNet50V2 as a basis of the transfer learning.
 
-- results on the test set (confusion matrix)
-- discuss why probably better than baseline model (advantages)
--but xxx (disadvantages)
-- possibilities to improve plan of attack
 
 Question 13
 The dataset was limited so the architecture was chosen so that overfitting will be limited. We chose a GlobalAveragePooling2D layer to reduce spatial dimensions.
