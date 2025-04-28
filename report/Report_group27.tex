@@ -67,6 +67,21 @@ I would use Recall and Precision metrics, because misclassifying COVID cases as 
 Question 8
 From the Accuracy picture, we can see that model is overfitting,meaning the model is performing well on the training data but poorly on unseen data. Learning rate would need to be optimized first: To balance training speed and model accuracy.
 Question 9
+Yes, there is a significant gap between the training and validation accuracy, training accuracy is higher than validation accuracy.
+Countermeasures:
+Early Stopping: Monitoring the validation loss and stopping training when it stops improving.
+Regularization: Adding L2 regularization to weights to penalize large weights and prevent overfitting.
+Dropout: Implementing dropout layers in the neural network to reduce overfitting by randomly deactivating some neurons during training.
+Question 10
+I would typically start with a grid search for a small subset of hyperparameters like learning rate, batch size, and dropout rate to identify a good range of values.
+Alternatively, a random search can be effective when the hyperparameter space is large, as it samples random combinations and can often lead to better results with fewer evaluations.
+After initial testing, sequential tuning based on previous results that is adjusting the learning rate after testing batch size can help refine the hyperparameter choices more efficiently.
+Question 11
+Adam optimizer is typically a good choice for this kind of task, as it combines the benefits of both Momentum and RMSprop, helping it converge faster while adjusting the learning rate during training.
+For binary classification, the binary cross-entropy loss function is the most appropriate. This function compares the predicted probability of the positive class (COVID) with the true label.
+I may also experiment with RMSprop and SGD optimizers to compare their effectiveness.
+For the loss function, categorical cross-entropy might be used if the task was multi-class.
+Question 12
 
 
 \section{Task 3}
