@@ -4,6 +4,9 @@ from tensorflow.keras.layers import Conv2D, Dropout, Input, Flatten, Dense, MaxP
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 
+##########################
+### plotting functions ###
+##########################
 
 ## function plotting accuracy and loss of training vs validation dataset
 def plot_accuracy_loss(history, epochs, validation = True):
@@ -16,7 +19,7 @@ def plot_accuracy_loss(history, epochs, validation = True):
 
     epochs_range = range(epochs)
 
-    plt.figure(figsize=(14, 8))
+    plt.figure(figsize=(10, 8))
     plt.subplot(1, 2, 1)
     plt.plot(epochs_range, acc, label='Training Accuracy')
     if validation:
@@ -43,35 +46,6 @@ def plot_accuracy_loss(history, epochs, validation = True):
     plt.tight_layout()
     plt.show()
 
-## function building the model used in this task
-def build_model(img_height, img_width, metrics):
-    ResNet_model = tf.keras.applications.ResNet50V2(
-        include_top=False,
-        weights="imagenet",
-    )
-
-    ResNet_model.trainable = False
-    inputs = Input(shape=(img_height, img_width, 3))
-    x = ResNet_model(inputs, training = False)
-    x = Dropout(0.5)(x)
-    x = Flatten()(x)
-    x = Dense(32, activation = 'relu')(x)
-    x = Dropout(0.5)(x)
-    outputs = Dense(1, activation = 'sigmoid')(x)
-    model = tf.keras.Model(
-        inputs,
-        outputs
-    )
-
-    optimizer = tf.keras.optimizers.Adam(learning_rate = 0.001)
-    model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics= metrics)
-
-    return model
-
-
-def concat_generators(*gens):
-    for gen in gens:
-        yield from gen
 
 def plot_confusion_matrix(y_true, y_pred, test_data_gen):
     cm = confusion_matrix(y_true, y_pred)
@@ -80,3 +54,12 @@ def plot_confusion_matrix(y_true, y_pred, test_data_gen):
     plt.ylabel("Actual")
     plt.title("Confusion Matrix")
     plt.show()
+
+#########################
+### utility functions ###
+#########################
+
+## function making it possible to concatenate validation and training data generators
+def concat_generators(*gens):
+    for gen in gens:
+        yield from gen
