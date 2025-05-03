@@ -40,6 +40,20 @@ def get_augmented_images(datagen, train_dir, batch_size=32, img_size=(128, 128),
     plt.show()
     return [train_data_gen[0][0][0] for _ in range(num_images)]  
 
+# function calculating and plotting pixelwise mean and standard deviation
+def get_pixelmean_standarddeviation(sample_batch):
+    val_pixel_mean = np.mean(sample_batch, axis=0)[:,:,0]
+    val_pixel_std = np.std(sample_batch, axis = 0)[:,:,0]
+
+    fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+    for img, t, ax in zip([val_pixel_mean, val_pixel_std],  ["a) Pixel Mean", "b) Pixel Standard Deviation"], axes):
+        img_ax = ax.matshow(img)
+        ax.axis('off')
+        plt.colorbar(img_ax, ax=ax)
+        ax.set_title(t, y = 1)
+    plt.show()
+    plt.tight_layout()
+
 #################################
 ### Define pipeline functions ###
 #################################
