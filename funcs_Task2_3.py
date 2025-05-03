@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-import tensorflow as tf
-from tensorflow.keras.layers import Conv2D, Dropout, Input, Flatten, Dense, MaxPooling2D
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 

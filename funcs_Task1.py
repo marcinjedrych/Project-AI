@@ -105,7 +105,7 @@ def test_validation_data_Pipeline(batch_size, img_size, train_dir, test_dir, shu
     # get parameters for normalization
     global_mean, global_std = get_normalization_numbers(img_size, train_dir)
 
-    #set up training data generator, with data augmentation and normalization
+    #set up training data generator, with normalization
     test_image_generator = ImageDataGenerator(
         rescale=1./255, 
         featurewise_center=True, 
