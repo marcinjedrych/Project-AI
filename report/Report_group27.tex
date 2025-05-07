@@ -6,6 +6,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{multirow}
+\usepackage{float}
 \renewcommand{\arraystretch}{1.5}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -69,23 +70,23 @@ To augment the data, pictures were slightly shifted in width, rotated with a max
 \end{table}
 
 
-\begin{figure}[h] \centering 						\includegraphics[width=0.9\columnwidth]{fig_task2_confusionmatrix.png} 
+\begin{figure}[t] \centering 						\includegraphics[width=0.9\columnwidth]{fig_task2_confusionmatrix.png} 
 	\caption{Confusion matrix of the test data classified by the final baseline model.} 
 	\label{fig:task2_confusionmatrix} 
 \end{figure}
 
 
-\begin{figure*}[h] \centering \includegraphics[width=0.9\textwidth]{fig_task2_examples_images_label_vs_predictedlabel.png} 
+\begin{figure*}[t] \centering \includegraphics[width=0.9\textwidth]{fig_task2_examples_images_label_vs_predictedlabel.png} 
 	\caption{Sample of test images with the real and predicted label, as classified by the final baseline model.} 
 	\label{fig:task2_image_examples} 
 \end{figure*}
 
-\begin{figure*}[h] \centering \includegraphics[width=0.6\textwidth]{fig_task2_training_curves_train_validation_initial_model.png} 
+\begin{figure*}[t] \centering \includegraphics[width=0.6\textwidth]{fig_task2_training_curves_train_validation_initial_model.png} 
 	\caption{The training and validation curves of the loss and accuracy of the initial baseline model before the hyperparameter tuning.} 
 	\label{fig:task2_curves_initial} 
 \end{figure*}
 
-\begin{figure*}[h] \centering \includegraphics[width=0.6\textwidth]{fig_task2_training_curves_train_final_model.png}
+\begin{figure*}[t] \centering \includegraphics[width=0.6\textwidth]{fig_task2_training_curves_train_final_model.png}
 	\caption{The training curves of the loss and accuracy of the final baseline model where the model was trained based on the combination of validation and training data.} 	
 	\label{fig:task2_curves_final} 
 \end{figure*}
@@ -99,12 +100,12 @@ In this case, the ResNet50V2, a convolution neural network consisting of 50 laye
 After setting the model architecture, the hyperparameters of the added layers are tuned using a general grid search. While tuning the hyperparameters, the pretrained parameters in the ResNet50V2-layers remain unchanged. Early stopping based on the validation loss is used with a patience of five steps. The tuned parameters consist of the  batch size, learning, and dropout rates. Table \ref{tab:gridsearch} shows the parameter combinations used during the hyperparameter-tuning process. Based on the validation accuracy of each combination tried out during the grid search, the combination of a batch size equal to 64, a dropout rate of 0.3 and a learning rate of 1e-3 is the best performing combination. The accuracy of the model on the validation set was then equal to 0.81, and the model was early stopped after 29 epochs. After this tuning step, a model is trained during 29 epochs based on the combination of the training and validation data. Another, final, model is trained in which the ResNet50V2-layers are unfrozen, hence fine-tuning the weights in these layers is possible, again 29 epochs were used here. The training curves of the model before unfreezing the ResNet50V2-layers is visualized in figure \ref{fig:task3_curves_final_hyperparams}, the training curves of the model after unfreezing is visualized in figure \ref{fig:task3_curves_final_resnet}.
 
 
-\begin{figure*}[!htbp] \centering \includegraphics[width=0.6\textwidth]{fig_task3_training_curves_train_model_tuned_hyperparameters.png} 
+\begin{figure*}[t] \centering \includegraphics[width=0.6\textwidth]{fig_task3_training_curves_train_model_tuned_hyperparameters.png} 
 	\caption{The training curves of the loss and accuracy of the final transfer model with tuned hyperparameters, but the original weights of the ResNet50v2, where the model was trained based on the combination of validation and training data.} 
 	\label{fig:task3_curves_final_hyperparams} 
 \end{figure*}
 
-\begin{figure*}[!htbp] \centering \includegraphics[width=0.6\textwidth]{fig_task3_training_curves_train_model_finetuned_resnet.png} 
+\begin{figure*}[t] \centering \includegraphics[width=0.6\textwidth]{fig_task3_training_curves_train_model_finetuned_resnet.png} 
 	\caption{The training curves of the loss and accuracy of the final transfer model with tuned hyperparameters and weights of the ResNet50v2 where the model was trained based on the combination of validation and training data.} 
 	\label{fig:task3_curves_final_resnet} 
 \end{figure*}
@@ -118,21 +119,21 @@ Comparing these curves to the training curve of the final baseline model produce
 As a final step in this task, the finetuned model is evaluated using the test set. Both the confusion matrix (\ref{fig:task3_confusionmatrix}), where four more images are correctly classified as COVID but 10 less images correctly classified are normal compared to the confusion matrix of the baseline model, and the calculated accuracy of 0.76 show a slightly worse result for this model than for the baseline model. 
 This result differs from the initial expectations. The transfer model was expected to have an increased performance with only limited increased learning time compared to the base model due to the addition of the pretrained ResNet50v2 model. Instead, the result is a model showing very promising results on the training set with strongly decreased test results. This implies overfitting, which can be due to the relatively limited amount of training data compared to the model complexity. 
 
-\begin{figure}[h] \centering \includegraphics[width=0.9\columnwidth]{fig_task3_confusionmatrix.png} \caption{Confusion matrix of the test data classified by the final transfer model (with tuned hyperparameters and fine-tuned weights of the ResNet50v2 model).} \label{fig:task3_confusionmatrix} 
+\begin{figure}[H] \centering \includegraphics[width=0.9\columnwidth]{fig_task3_confusionmatrix.png} \caption{Confusion matrix of the test data classified by the final transfer model (with tuned hyperparameters and fine-tuned weights of the ResNet50v2 model).} \label{fig:task3_confusionmatrix} 
 \end{figure}
 
 Different ways to alleviate the overfitting problem exist. One option is to use the transfer model before the finetuning of the ResNet50v2 model weights, as this provides a more general model less tailored towards the training data. Other options are introducing bigger transformations in the training set, or adding more training data if possible. Alternatively, starting with a lower resolution can also help to generate a more general model with a lower overfitting risk. Finally, the pre-trained model forming the basis of the transfer model can be changed to a model specifically trained on medical images, like the CheXNet model \cite{CHEXNET}.
 
 
 
-%\begin{figure*}[h] \centering \includegraphics[width=0.9\textwidth]{fig_task3_examples_images_label_vs_predictedlabel.png} 
+%\begin{figure*}[t] \centering \includegraphics[width=0.9\textwidth]{fig_task3_examples_images_label_vs_predictedlabel.png} 
 %	\caption{Sample of test images with the real and predicted label, as classified by the final transfer model.} 
 %	\label{fig:task3_image_examples} 
 %\end{figure*}
 
 
 
-%\begin{figure*}[h] \centering \includegraphics[width=0.6\textwidth]{fig_task3_training_curves_train_validation_initial_model.png} 
+%\begin{figure*}[t] \centering \includegraphics[width=0.6\textwidth]{fig_task3_training_curves_train_validation_initial_model.png} 
 %	\caption{The training and validation curves of the loss and accuracy of the initial transfer model.} \label{fig:task3_curves_initial} 
 %\end{figure*}
 
@@ -145,7 +146,7 @@ Our Grad-CAM visualizations revealed that the model focuses particularly on the 
 Moreover, Grad-CAM proved useful in understanding misclassifications. In several incorrect predictions, we observed that the model was influenced by visual noise such as unusual patient posture. If this would have appeared more frequently in the opposite class, the model may have learned to associate these irrelevant features with that class, leading to incorrect predictions. 
 Based on these insights, if we were to collect more data and retrain the model, we would prioritize minimizing visual biases by standardizing patient positioning, removing non-diagnostic artifacts (e.g., cables), and ensuring a balanced dataset across age and other demographic factors. These steps would help the model focus more effectively on clinically meaningful features, improving both accuracy and trustworthiness.
 
-\begin{figure}[h] \centering \includegraphics[width=0.8\columnwidth]{gradcam_example.png} \caption{Example Grad-CAM heatmap highlighting lung regions associated with a COVID-positive classification.} \label{fig:gradcam_example} \end{figure}
+\begin{figure}[H] \centering \includegraphics[width=0.8\columnwidth]{gradcam_example.png} \caption{Example Grad-CAM heatmap highlighting lung regions associated with a COVID-positive classification.} \label{fig:gradcam_example} \end{figure}
 
 \section{Conclusions}\label{sec:conclusion}
 
