@@ -53,31 +53,23 @@ To augment the data, pictures were slightly shifted in width, rotated with a max
 
 
 \section{Task 2: Building the baseline model}\label{sec:task_2}
-In this task, we selected Recall and Precision as the appropriate metrics because accurately identifying COVID cases is critical, and misclassifying COVID cases as "normal" (false negatives) could have serious implications. These metrics help evaluate the model's performance by emphasizing the correct identification of COVID cases, which is crucial for this problem.
-Looking at the training and validation curves in the initial model's history plot, it was evident that the model was overfitting. This is shown by the high training accuracy compared to the significantly lower validation accuracy, indicating that the model performs well on the training data but struggles with unseen data. The learning rate emerged as the hyperparameter that would need to be optimized first to strike a balance between training speed and model accuracy.Overfitting was observed due to the significant gap between training and validation accuracy. To address this, we implemented countermeasures like early stopping, where training is halted when the validation loss no longer improves, and dropout layers to randomly deactivate neurons, helping to reduce overfitting. The Adam optimizer was also used, which helps with both convergence and handling overfitting by adjusting the learning rate during training.
-For hyperparameter search, we began with a grid search to test a small subset of values for key parameters such as learning rate, batch size, and dropout rate. This helped identify a good range of values. In case of a large hyperparameter space, we also employed random search to sample random combinations, which is often more efficient. After initial testing, we used sequential tuning, adjusting hyperparameters based on previous results, such as fine-tuning the learning rate after optimizing the batch size.
-The Adam optimizer was chosen for this task due to its ability to combine the advantages of both Momentum and RMSprop, enabling faster convergence and better handling of the learning rate. For the loss function, binary cross-entropy was selected, as it is suitable for binary classification tasks like this one. While we also experimented with RMSprop and SGD optimizers, Adam was found to be the most effective. For multi-class tasks, categorical cross-entropy could be considered as an alternative loss function.
-In the final model, the training curves indicated significant improvement, with the model reaching a higher accuracy and a more efficient drop in loss compared to the initial training. This suggests that the model has learned to generalize better and is more effective at predicting unseen data.
 
-\begin{table}[H]
-	\caption{Overview of hyperparameter values used in the grid search during hyperparameter tuning both in task 1 and task 2. In both tasks, a true grid search was carried out, meaning that all possible combinations of the given values were tried out.}
-	\label{tab:gridsearch} 
-	\begin{tabular}{|l||cc|}
-		\hline
-		\multirow{2}{*}{\textbf{Tuned Hyperparameters}} & \multicolumn{2}{c|}{\textbf{Values Included in Grid  Search}}                                                           \\ \cline{2-3} 
-		& \multicolumn{1}{c|}{\textit{Baseline Model (Task 2)}} & \textit{Transfer Model (Task 3)}                                 \\ \hline \hline
-		Filters                                         & \multicolumn{1}{c|}{{[}8, 32, 64{]}}                  & \begin{tabular}{@{}c@{}} Not tuned -  not present \\  in manually added part \end{tabular}  \\ \hline
-		Dropout Fate                                    & \multicolumn{1}{c|}{{[}0.4, 0.3, 0.2{]}}              & {[}0.3, 0.4, 0.5{]}                                             \\ \hline
-		Learning Rate                                   & \multicolumn{1}{c|}{{[}1e-3, 1e-4, 1e-5{]}}           & {[}1e-2, 1e-3, 1e-4{]}                                          \\ \hline
-		Batch Size                                      & \multicolumn{1}{c|}{not tuned}                        & {[}32, 64, 128{]}                                               \\ \hline
-		Optimizer                                       & \multicolumn{1}{c|}{{[}adam, sgd{]}}                  & \begin{tabular}{@{}c@{}} Not tuned -  \\ adam optimizer used  \end{tabular}                                \\ \hline
-	\end{tabular}
-\end{table}
+
+In this task, a neural network including two convolutional layers, one fully connected layer and one dropout layer is trained. During this training, accuracy is used as a metric for model performance. Accuracy is as an appropriate metric as it compares the correctly classified COVID cases and normal cases to the sum of all cases.  For the loss function for the model, binary cross-entropy was selected, as it is suitable for binary classification tasks like this one.
+
 
 \begin{figure}[h!] \centering 						\includegraphics[width=0.9\columnwidth]{fig_task2_confusionmatrix.png} 
 	\caption{Confusion matrix of the test data classified by the final baseline model.} 
 	\label{fig:task2_confusionmatrix} 
 \end{figure}
+The result of the initial model training is shown in figure \ref{fig:task2_curves_initial}. Looking at the training and validation curves in the initial model's history plot, it is that the learning curve and validation curve are too variable. Therefore, the learning rate should be tuned. The learning rate, together with the optimizer, filters and dropout rate, are tuned using a grid search. The values used for the hyperparameters are given in table \ref{tab:gridsearch}. The filters are tuned to find the ideal scale to generalize the images, the values for this hyperparameter are based on values commonly seen in convolutional networks. The dropout rate was tuned to minimize the risk of overfitting, again, common seen values were used. The two tried out optimizers are chosen because these were seen in the course. Finally, the learning rate was tuned to have a smoother learning curve, possible values were chosen based on the initial value. An early stopping mechanism with a patience of 5 is implemented during the grid search. 
+
+The best performing combination of hyperparameters turned out to be a filter size  equal to 8, a dropout rate of 0.3, a learning rate of 0.001 with the Adam optimizer. The early stopping algorithm stopped this model training after 29 epochs and resulted in a validation accuracy of 0.89. Using these parameters, the model was trained for one final time on the combination of the training and validation data and the performance was evaluated on the test data. The results are shown in figures \ref{fig:task2_curves_final} and \ref{fig:task2_confusionmatrix}, the accuracy is equal to 0.79.
+
+
+In the final model, the training curves indicated significant improvement, with the model reaching a higher accuracy and a more efficient drop in loss compared to the initial training. This suggests that the model has learned to generalize better and is more effective at predicting unseen data.
+
+
 
 
 
@@ -105,6 +97,21 @@ In the final model, the training curves indicated significant improvement, with 
 
 Within task 3, a neural network is built using the transfer learning approach. In other words, a pretrained model is used as a basis to built a model, hereby making it possible to use a network with many layers even though a limited set of training data is available. 
 In this case, the ResNet50V2, a convolution neural network consisting of 50 layers that was originally trained on the ImageNet dataset, is used as the pretrained model \cite{resnet}. After the ResNet50V2 model, four extra layers are added. First, a GlobalAveragePooling2D layer is added to reduce the spatial dimensions. Then, a 128-node dense layer with relu-activation is added in combination with a dropout layer to reduce risk of overfitting. A final single-node dense layer with sigmoid activation was used to get the binary output.
+
+\begin{table}[H]
+	\caption{Overview of hyperparameter values used in the grid search during hyperparameter tuning both in task 1 and task 2. In both tasks, a true grid search was carried out, meaning that all possible combinations of the given values were tried out.}
+	\label{tab:gridsearch} 
+	\begin{tabular}{|l||cc|}
+		\hline
+		\multirow{2}{*}{\textbf{Tuned Hyperparameters}} & \multicolumn{2}{c|}{\textbf{Values Included in Grid  Search}}                                                           \\ \cline{2-3} 
+		& \multicolumn{1}{c|}{\textit{Baseline Model (Task 2)}} & \textit{Transfer Model (Task 3)}                                 \\ \hline \hline
+		Filters                                         & \multicolumn{1}{c|}{{[}8, 32, 64{]}}                  & \begin{tabular}{@{}c@{}} Not tuned -  not present \\  in manually added part \end{tabular}  \\ \hline
+		Dropout Fate                                    & \multicolumn{1}{c|}{{[}0.4, 0.3, 0.2{]}}              & {[}0.3, 0.4, 0.5{]}                                             \\ \hline
+		Learning Rate                                   & \multicolumn{1}{c|}{{[}1e-3, 1e-4, 1e-5{]}}           & {[}1e-2, 1e-3, 1e-4{]}                                          \\ \hline
+		Batch Size                                      & \multicolumn{1}{c|}{not tuned}                        & {[}32, 64, 128{]}                                               \\ \hline
+		Optimizer                                       & \multicolumn{1}{c|}{{[}adam, sgd{]}}                  & \begin{tabular}{@{}c@{}} Not tuned -  \\ adam optimizer used  \end{tabular}                                \\ \hline
+	\end{tabular}
+\end{table}
 
 After setting the model architecture, the hyperparameters of the added layers are tuned using a general grid search. While tuning the hyperparameters, the pretrained parameters in the ResNet50V2-layers remain unchanged. Early stopping based on the validation loss is used with a patience of five steps. The tuned parameters consist of the  batch size, learning, and dropout rates. Table \ref{tab:gridsearch} shows the parameter combinations used during the hyperparameter-tuning process. Based on the validation accuracy of each combination tried out during the grid search, the combination of a batch size equal to 64, a dropout rate of 0.3 and a learning rate of 1e-3 is the best performing combination. The accuracy of the model on the validation set was then equal to 0.81, and the model was early stopped after 29 epochs. After this tuning step, a model is trained during 29 epochs based on the combination of the training and validation data. Another, final, model is trained in which the ResNet50V2-layers are unfrozen, hence fine-tuning the weights in these layers is possible, again 29 epochs were used here. The training curves of the model before unfreezing the ResNet50V2-layers is visualized in figure \ref{fig:task3_curves_final_hyperparams}, the training curves of the model after unfreezing is visualized in figure \ref{fig:task3_curves_final_resnet}.\\
 \begin{figure*}[p] \centering \includegraphics[width=0.6\textwidth]{fig_task3_training_curves_train_model_tuned_hyperparameters.png} 
